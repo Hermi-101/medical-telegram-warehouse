@@ -1,3 +1,5 @@
 telethon
 python-dotenv
 pytest
+sqlalchemy
+psycopg2-binary
