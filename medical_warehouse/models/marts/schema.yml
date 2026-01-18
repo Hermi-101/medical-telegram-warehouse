@@ -34,3 +34,4 @@ models:
         description: "Number of views the message received."
         tests:
           - not_null
+          
