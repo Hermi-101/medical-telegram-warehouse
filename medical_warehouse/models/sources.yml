@@ -5,3 +5,8 @@ sources:
     schema: raw
     tables:
       - name: telegram_messages
+
+  - name: detection_data
+    schema: detection
+    tables:
+      - name: yolo_results
