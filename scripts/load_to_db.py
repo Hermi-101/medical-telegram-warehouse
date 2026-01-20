@@ -27,16 +27,18 @@ def load_json_to_postgres():
 
     if all_data:
         df = pd.DataFrame(all_data)
-        # Create schema 'raw' if it doesn't exist
-        with engine.connect() as conn:
-          conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw;"))
-          conn.commit()  # Important: in SQLAlchemy 2.0, you must commit changes
         
-        # Load to PostgreSQL
+        with engine.connect() as conn:
+            # 1. Create schema if not exists
+            conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw;"))
+            
+            # 2. FORCE drop the table if it exists (the CASCADE part is key!)
+            conn.execute(text("DROP TABLE IF EXISTS raw.telegram_messages CASCADE;"))
+            conn.commit()
+        
+        # 3. Now load the data (since table is gone, 'replace' will work fine)
         df.to_sql('telegram_messages', engine, schema='raw', if_exists='replace', index=False)
         print(f"Successfully loaded {len(df)} rows into raw.telegram_messages")
-    else:
-        print("No data found to load.")
 
 if __name__ == "__main__":
     load_json_to_postgres()

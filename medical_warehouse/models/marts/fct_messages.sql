@@ -1,7 +1,8 @@
 select
     m.message_id,
     c.channel_key,
-    -- This creates the link to your dim_dates table (YYYYMMDD format)
+    -- Add this line back:
+    m.message_date, 
     cast(to_char(m.message_date, 'YYYYMMDD') as integer) as date_key,
     m.message_text,
     m.message_length,
